@@ -11,7 +11,7 @@ function menampilkan_banner() {
 	echo "  Cari File dan Folder yang Disembunyikan  "
 	echo "              Dalam Direktori              "
 	echo "                                           "
-	echo "   https://github.com/fixploit03/telusur   "
+	echo "   https://github.com/fixploit03/Telusur   "
 	echo "==========================================="
 	echo ""
 }
