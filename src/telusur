@@ -27,13 +27,13 @@
 # ---------------------------------------------------------------------------------
 
 # Variabel warna
-m="\e[1;31m"
-h="\e[1;32m"
-k="\e[1;33m"
-b="\e[1;34m"
-c="\e[1;36m"
-p="\e[1;37m"
-r="\e[0m"
+m="\e[1;31m" # Merah
+h="\e[1;32m" # Hijau 
+k="\e[1;33m" # Kuning 
+b="\e[1;34m" # Biru 
+c="\e[1;36m" # Cyan 
+p="\e[1;37m" # Putih 
+r="\e[0m"    # Reset 
 
 # Fungsi untuk menampilkan banner
 function menampilkan_banner() {
@@ -92,7 +92,6 @@ function mencari_file_dan_folder(){
                 fi
 
 		nama_file="${folder_utama}/${folder_hasil}/${folder_hasil}.csv"
-
                 touch "${nama_file}"
 		echo "No, Jenis, Nama, Ukuran" >> "${nama_file}"
 
