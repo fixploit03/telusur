@@ -26,37 +26,50 @@
 # SOFTWARE.
 # ---------------------------------------------------------------------------------
 
+# Variabel warna
+m="\e[1;31m"
+h="\e[1;32m"
+k="\e[1;33m"
+b="\e[1;34m"
+c="\e[1;36m"
+p="\e[1;37m"
+r="\e[0m"
+
+# Fungsi untuk menampilkan banner
 function menampilkan_banner() {
 	clear
-	echo "==========================================="
-	echo "           ╔╦╗╔═╗╦  ╦ ╦╔═╗╦ ╦╦═╗           "
-	echo "            ║ ║╣ ║  ║ ║╚═╗║ ║╠╦╝           "
-	echo "            ╩ ╚═╝╩═╝╚═╝╚═╝╚═╝╩╚═           "
-	echo "  Cari File dan Folder yang Disembunyikan  "
-	echo "              Dalam Direktori              "
-	echo "                                           "
-	echo "   https://github.com/fixploit03/Telusur   "
-	echo "==========================================="
-	echo ""
+	echo -e "${p}===========================================${r}"
+	echo -e "${m}           ╔╦╗╔═╗╦  ╦ ╦╔═╗╦ ╦╦═╗           ${r}"
+	echo -e "${m}            ║ ║╣ ║  ║ ║╚═╗║ ║╠╦╝           ${r}"
+	echo -e "${m}            ╩ ╚═╝╩═╝╚═╝╚═╝╚═╝╩╚═           ${r}"
+	echo -e "${p}  Cari File dan Folder yang Disembunyikan  ${r}"
+	echo -e "${p}              Dalam Direktori              ${r}"
+	echo -e "${r}                                           "
+	echo -e "${h}   https://github.com/fixploit03/Telusur   ${r}"
+	echo -e "${p}===========================================${r}"
+	echo -e ""
 }
 
-function masukkan_nama_direktori() {
+# Fungsi untuk memasukkan direktori
+function masukkan_nama_direktori(){
 	while true; do
-		read -p "[#] Masukkan nama direktori: " direktori
-		echo "[*] Mengecek direktori '${direktori}'..."
-		sleep 3
+		read -p $'\e[1;37m[\e[1;34m#\e[1;37m] Masukkan nama direktori: ' direktori
+		if [[ -z "${direktori}" ]]; then
+			echo -e "${p}[${m}-${p}] Nama direktori tidak boleh kosong.${r}"
+			continue
+		fi
 		if [[ ! -d "${direktori}" ]]; then
-			echo "[-] Direktori '${direktori}' tidak ditemukan. Coba lagi."
+			echo -e "${p}[${m}-${p}] Direktori '${direktori}' tidak ditemukan.${r}"
 		else
-			echo "[+] Direktori '${direktori}' ditemukan."
+			echo -e "${p}[${h}+${p}] Direktori '${direktori}' ditemukan.${r}"
 			break
 		fi
 	done
 }
 
-function mencari_file_dan_folder() {
-	echo "[*] Mencari seluruh file dan folder yang disembunyikan dalam direktori '${direktori}'..."
-	sleep 3
+# Fungsi untuk mencari file dan folder yang disembunyikan
+function mencari_file_dan_folder(){
+	echo -e "${p}[${b}*${p}] Mencari seluruh file dan folder yang disembunyikan dalam direktori '${direktori}'...${r}"
 	echo ""
 
 	cari=($(find "${direktori}" -name ".*" 2>/dev/null))
@@ -70,18 +83,13 @@ function mencari_file_dan_folder() {
 
 		# folder utama
                 if [[ ! -d "${folder_utama}" ]]; then
-                        mkdir -p "${folder_utama}"
+                        mkdir "${folder_utama}"
                 fi
-		cd "${folder_utama}"
 
 		# folder hasil
                 if [[ ! -d "${folder_hasil}" ]]; then
-                        mkdir -p "${folder_hasil}"
+                        mkdir -p "${folder_utama}/${folder_hasil}"
                 fi
-		cd "${folder_hasil}"
-
-		# pindah ke folder utama '/hasil/utama'
-		cd ../../
 
 		nama_file="${folder_utama}/${folder_hasil}/${folder_hasil}.csv"
 
@@ -91,7 +99,6 @@ function mencari_file_dan_folder() {
 		counter=1
 
 		for isi_direktori in "${cari[@]}"; do
-
 			# Mendapatkan ukuran file dalam byte
 			ukuran_byte=$(stat -c%s "${isi_direktori}" 2>/dev/null)
 
@@ -110,12 +117,12 @@ function mencari_file_dan_folder() {
 			fi
 
 			if [[ -f "${isi_direktori}" ]]; then
-				echo "[+] [File] '${isi_direktori}' [${ukuran}]"
+				echo -e "${p}[${h}FOUND${p}] [${r}File${p}] '${isi_direktori}' [${k}${ukuran}${p}]${r}"
 				echo "${counter}, File, ${isi_direktori}, ${ukuran}" >> "${nama_file}"
 				((jumlah_file+=1))
 				((counter+=1))
 			elif [[ -d "${isi_direktori}" ]]; then
-                                echo "[+] [Folder] '${isi_direktori}' [${ukuran}]"
+                                echo -e "${p}[${h}FOUND${p}] [${b}Folder${p}] '${isi_direktori}' [${k}${ukuran}${p}]${r}"
 				echo "${counter}, Folder, ${isi_direktori}, ${ukuran}" >> "${nama_file}"
 				((jumlah_folder+=1))
 				((counter+=1))
@@ -124,18 +131,20 @@ function mencari_file_dan_folder() {
 
 		echo ""
                 echo "" >> "${nama_file}"
-		echo "[+] Jumlah file yang disembunyikan: ${jumlah_file}"
-                echo "[+] Jumlah folder yang disembunyikan: ${jumlah_folder}"
-                echo "[+] Hasil pencarian disimpan di: ${nama_file}"
+		echo -e "${p}[${h}+${p}] Jumlah file yang disembunyikan: ${h}${jumlah_file}${r}"
+                echo -e "${p}[${h}+${p}] Jumlah folder yang disembunyikan: ${h}${jumlah_folder}${r}"
+                echo -e "${p}[${h}+${p}] Hasil pencarian disimpan di: ${h}${nama_file}${r}"
 	else
-		echo "[-] Tidak ada file atau folder tersembunyi yang ditemukan dalam '${direktori}'."
+		echo -e "${p}[${m}-${p}] Tidak ada file atau folder tersembunyi yang ditemukan dalam '${direktori}'.${r}"
 	fi
 }
 
+# Fungsi main (utama)
 function main() {
 	menampilkan_banner
 	masukkan_nama_direktori
 	mencari_file_dan_folder
 }
 
+# Memanggil fungsi main
 main
