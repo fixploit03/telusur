@@ -1,7 +1,6 @@
 #!/bin/bash
 # [instal.sh]
 # Skrip untuk menginstal Telusur secara otomatis
-# Fungsi untuk mengecek root
 
 # Fungsi untuk mengecek root
 function cek_root(){
