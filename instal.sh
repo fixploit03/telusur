@@ -38,6 +38,7 @@ function konfirmasi(){
                 read -p "[#] Apakah Anda ingin menginstal Telusur [Y/n]: " nanya
                 if [[ "${nanya}" == "y" || "${nanya}" == "Y" ]]; then
                         instal_telusur
+                        exit 0
                 elif [[ "${nanya}" == "n" || "${nanya}" == "N" ]]; then
                         echo "[*] Semoga harimu menyenangkan ^_^"
                         exit 0
